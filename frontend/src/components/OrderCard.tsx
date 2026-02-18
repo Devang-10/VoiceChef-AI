@@ -35,7 +35,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onComplete }) => {
                 <div className="border-t border-gray-100 pt-4 mb-4">
                     <h3 className="text-sm font-semibold text-gray-700 mb-2">Items</h3>
                     <ul className="space-y-1">
-                        {order.items.map((item, index) => (
+                        {(Array.isArray(order.items) ? order.items : []).map((item, index) => (
                             <li key={index} className="flex items-center text-gray-800 text-base font-medium">
                                 <span className="w-2 h-2 bg-orange-400 rounded-full mr-2"></span>
                                 {item}
