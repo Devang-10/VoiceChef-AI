@@ -13,6 +13,7 @@ export interface RetellPayload {
                 items: string[];
                 total: number;
                 phone: string;
+                name: string;
             }
         };
         // Fallback: maybe we get the phone from 'from_number'
@@ -25,6 +26,7 @@ export interface Order {
     created_at?: string;
     items: string[]; // JSONB in DB, string[] here
     customer_phone: string;
+    customer_name?: string;
     total_price: number;
     status: 'pending' | 'completed';
 }

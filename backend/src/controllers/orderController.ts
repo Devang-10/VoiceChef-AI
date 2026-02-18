@@ -19,6 +19,7 @@ export const handleRetellWebhook = async (req: Request, res: Response) => {
         // We assume 'custom_analysis_data' from our Prompt schema.
         const analysis = payload.call.call_analysis?.custom_analysis_data;
         const phone = analysis?.phone || payload.call.from_number || 'Unknown';
+        const name = analysis?.name || 'Guest';
         const items = analysis?.items || [];
         let subtotal = analysis?.total || 0;
 
@@ -34,6 +35,7 @@ export const handleRetellWebhook = async (req: Request, res: Response) => {
             .insert([
                 {
                     items: items, // Supabase handles array -> jsonb automatic conversion usually, or we stringify
+                    customer_name: name,
                     customer_phone: phone,
                     total_price: finalPrice,
                     status: 'pending',

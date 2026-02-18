@@ -28,6 +28,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onComplete }) => {
                     </div>
                     <div className="text-right">
                         <p className="text-gray-900 font-bold block">${order.total_price.toFixed(2)}</p>
+                        <p className="text-gray-600 text-sm font-medium">{order.customer_name || 'Guest'}</p>
                         <p className="text-gray-400 text-xs">{order.customer_phone}</p>
                     </div>
                 </div>
