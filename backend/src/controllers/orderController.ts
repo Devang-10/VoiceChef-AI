@@ -56,3 +56,30 @@ export const handleRetellWebhook = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+export const completeOrder = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            res.status(400).json({ error: 'Missing order ID' });
+            return;
+        }
+
+        const { error } = await supabase
+            .from('orders')
+            .update({ status: 'completed' })
+            .eq('id', id);
+
+        if (error) {
+            console.error('Error completing order:', error);
+            res.status(500).json({ error: 'Failed to complete order' });
+            return;
+        }
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error in completeOrder:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};

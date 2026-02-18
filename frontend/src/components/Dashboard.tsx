@@ -60,14 +60,18 @@ export const Dashboard: React.FC = () => {
         // Optimistic update
         setOrders((prev) => prev.filter((o) => o.id !== id));
 
-        const { error } = await supabase
-            .from('orders')
-            .update({ status: 'completed' })
-            .eq('id', id);
+        try {
+            const response = await fetch(`http://localhost:3000/orders/${id}/complete`, {
+                method: 'PATCH',
+            });
 
-        if (error) {
+            if (!response.ok) {
+                throw new Error('Failed to complete order');
+            }
+        } catch (error) {
             console.error('Error completing order:', error);
-            // Revert if needed (fetching usually fixes it or we can store prev state)
+            // Revert optimistic update
+            // Ideally we'd re-fetch or revert state, but for MVP fetching again or reloading is acceptable fallback
         }
     };
 

@@ -10,7 +10,7 @@
             "description": "The customer's name."
         },
         {
-            "type": "string",
+            "type": "number",
             "name": "phone",
             "description": "The customer's phone number."
         },
