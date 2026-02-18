@@ -1,4 +1,4 @@
-# Ghost Kitchen AI Voice Orchestrator
+# VoiceChef AI Voice Orchestrator
 
 A full-stack application for taking AI voice orders and displaying them on a real-time kitchen dashboard.
 
