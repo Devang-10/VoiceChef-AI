@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import type { Order } from '../types';
 import { OrderCard } from './OrderCard';
 import { AnimatePresence } from 'framer-motion';
 
 export const Dashboard: React.FC = () => {
+    const { user, signOut } = useAuth();
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -82,12 +84,23 @@ export const Dashboard: React.FC = () => {
                     <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">VoiceChef AI <span className="text-orange-500">Live</span></h1>
                     <p className="text-gray-500 mt-2">Turning Conversations into Orders</p>
                 </div>
-                <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
-                    <span className="text-sm font-medium text-gray-500">Status: </span>
-                    <span className="text-sm font-bold text-green-500 flex items-center gap-2 inline-flex">
-                        <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                        Online
+                <div className="flex items-center gap-4">
+                    <span className="text-sm text-gray-600 hidden md:inline">
+                        Welcome, <span className="font-semibold text-gray-900">{user?.email}</span>
                     </span>
+                    <button
+                        onClick={() => signOut()}
+                        className="text-sm text-red-500 hover:text-red-700 font-medium px-3 py-1 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
+                    >
+                        Sign Out
+                    </button>
+                    <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
+                        <span className="text-sm font-medium text-gray-500">Status: </span>
+                        <span className="text-sm font-bold text-green-500 flex items-center gap-2 inline-flex">
+                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            Online
+                        </span>
+                    </div>
                 </div>
             </header>
 

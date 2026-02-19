@@ -23,6 +23,10 @@ export const handleRetellWebhook = async (req: Request, res: Response) => {
         const items = analysis?.items || [];
         let subtotal = analysis?.total || 0;
 
+        // Extract user_id from retell_llm_dynamic_variables (preferred) or metadata
+        const dynamicVars = payload.call.retell_llm_dynamic_variables as any;
+        const userId = dynamicVars?.user_id || payload.call.metadata?.user_id || null;
+
         // Logic: Sanitize & Calculate Tax
         // If subtotal is missing, maybe calculate from items? (Skipping for now as per requirements "Calculate tax-inclusive price")
         // Let's assume the Agent sends the subtotal.
@@ -39,6 +43,7 @@ export const handleRetellWebhook = async (req: Request, res: Response) => {
                     customer_phone: phone,
                     total_price: finalPrice,
                     status: 'pending',
+                    user_id: userId
                 },
             ])
             .select();

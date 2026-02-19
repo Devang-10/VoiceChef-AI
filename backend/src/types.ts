@@ -18,6 +18,14 @@ export interface RetellPayload {
         };
         // Fallback: maybe we get the phone from 'from_number'
         from_number?: string;
+        metadata?: {
+            user_id?: string;
+        };
+        retell_llm_dynamic_variables?: {
+            user_id?: string;
+            user_email?: string;
+            user_name?: string;
+        };
     };
 }
 
