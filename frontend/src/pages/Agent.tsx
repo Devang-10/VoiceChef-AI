@@ -17,7 +17,8 @@ export const Agent: React.FC = () => {
 
         try {
             // 1. Get Access Token from Backend
-            const response = await fetch('http://localhost:3000/retell/create-web-call', {
+            const apiUrl = import.meta.env.VITE_API_URL;
+            const response = await fetch(`${apiUrl}/retell/create-web-call`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -63,7 +63,8 @@ export const Dashboard: React.FC = () => {
         setOrders((prev) => prev.filter((o) => o.id !== id));
 
         try {
-            const response = await fetch(`http://localhost:3000/orders/${id}/complete`, {
+            const apiUrl = import.meta.env.VITE_API_URL;
+            const response = await fetch(`${apiUrl}/orders/${id}/complete`, {
                 method: 'PATCH',
             });
 
