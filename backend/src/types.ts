@@ -36,5 +36,5 @@ export interface Order {
     customer_phone: string;
     customer_name?: string;
     total_price: number;
-    status: 'pending' | 'completed';
+    status: 'pending' | 'received' | 'cooking' | 'ready' | 'completed' | 'cancelled';
 }

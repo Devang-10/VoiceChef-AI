@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export const Signup: React.FC = () => {
@@ -23,69 +23,74 @@ export const Signup: React.FC = () => {
         if (error) {
             setError(error.message);
         } else {
-            // Check if email confirmation is required (Supabase default)
-            // But for now, we can redirect or show "Check email"
             navigate('/agent');
-            // Alternatively, auto-login usually happens if email confirm is off
         }
         setLoading(false);
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 text-slate-50 relative overflow-hidden">
+            {/* Background Blob */}
+            <div className="absolute top-0 -right-20 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl filter opacity-50 pointer-events-none"></div>
+
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-md bg-white/30 backdrop-blur-lg border border-white/20 shadow-xl rounded-2xl p-8"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="w-full max-w-md bg-slate-900/80 border border-slate-800 rounded-2xl p-8 backdrop-blur-xl shadow-2xl relative z-10"
             >
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800">Create Account</h1>
-                    <p className="text-gray-500 mt-2">Join VoiceChef AI today</p>
+                    <h2 className="text-3xl font-bold tracking-tight text-white">Create Account</h2>
+                    <p className="text-slate-400 mt-2">Join the future of dining</p>
                 </div>
 
                 {error && (
-                    <div className="mb-4 p-3 bg-red-100/50 border border-red-200 text-red-700 rounded-lg text-sm text-center">
+                    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
                         {error}
                     </div>
                 )}
 
                 <form onSubmit={handleSignup} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <label className="block text-sm font-medium text-slate-400 mb-2">Email</label>
                         <input
                             type="email"
                             required
+                            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-white placeholder-slate-500 hover:border-slate-600"
+                            placeholder="you@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all placeholder-gray-400"
-                            placeholder="you@example.com"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <label className="block text-sm font-medium text-slate-400 mb-2">Password</label>
                         <input
                             type="password"
                             required
+                            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-white placeholder-slate-500 hover:border-slate-600"
+                            placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all placeholder-gray-400"
-                            placeholder="••••••••"
                         />
                     </div>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold rounded-lg shadow-lg hover:shadow-orange-500/30 transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full py-4 bg-amber-500 text-slate-900 rounded-xl font-bold text-lg shadow-lg hover:bg-amber-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0 hover:shadow-amber-500/20"
                     >
                         {loading ? 'Creating Account...' : 'Sign Up'}
                     </button>
                 </form>
 
-                <div className="mt-6 text-center text-sm text-gray-500">
+                <p className="mt-8 text-center text-slate-400">
                     Already have an account?{' '}
-                    <Link to="/login" className="text-orange-600 font-semibold hover:text-orange-700 transition-colors">
+                    <Link to="/login" className="text-amber-500 hover:text-amber-400 font-medium transition-colors hover:underline">
                         Sign in
+                    </Link>
+                </p>
+                <div className="mt-4 text-center">
+                    <Link to="/" className="text-sm text-slate-500 hover:text-slate-300 transition-colors">
+                        Back to Home
                     </Link>
                 </div>
             </motion.div>

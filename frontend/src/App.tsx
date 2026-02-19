@@ -4,6 +4,8 @@ import { Dashboard } from './components/Dashboard';
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
 import { Agent } from './pages/Agent';
+import { Landing } from './pages/Landing';
+import { About } from './pages/About';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -12,6 +14,8 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* Public Routes */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
@@ -25,7 +29,7 @@ function App() {
             }
           />
           <Route
-            path="/"
+            path="/kitchen"
             element={
               <ProtectedRoute>
                 <Dashboard />
