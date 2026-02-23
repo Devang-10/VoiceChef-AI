@@ -120,10 +120,6 @@ export const Agent: React.FC = () => {
                     <Link to="/" className="text-xl font-bold tracking-tighter text-white">
                         Voice<span className="text-amber-500">Chef</span>
                     </Link>
-                    <div className="hidden md:flex items-center space-x-6 mr-6">
-                        <Link to="/how-it-works" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">How it Works</Link>
-                        <Link to="/about" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">About</Link>
-                    </div>
                     <div className="flex items-center space-x-4">
                         {!user ? (
                             <>
@@ -171,9 +167,9 @@ export const Agent: React.FC = () => {
                         </motion.div>
                     </div>
 
-                    <h2 className="text-3xl font-bold mb-4 text-center">
+                    {/* <h2 className="text-3xl font-bold mb-4 text-center">
                         {callStatus === 'idle' ? 'Tap to Order' : callStatus === 'calling' ? 'Connecting...' : 'Listening...'}
-                    </h2>
+                    </h2> */}
 
                     <p className="text-slate-500 text-center max-w-sm mb-12 h-6">
                         {callStatus === 'active' && "Speak naturally, I'm listening to your order."}
@@ -203,7 +199,7 @@ export const Agent: React.FC = () => {
                 <div className="flex justify-between items-center mb-8">
                     <h3 className="text-xl font-bold text-slate-300 flex items-center">
                         <span className="w-2 h-2 bg-amber-500 rounded-full mr-3 animate-pulse"></span>
-                        Live Interaction Log
+                        Live Order Details
                     </h3>
                     <span className="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded">REAL-TIME</span>
                 </div>
