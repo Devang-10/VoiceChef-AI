@@ -18,31 +18,33 @@ export const Agent: React.FC = () => {
     useEffect(() => {
         if (!user) return;
 
-        // Subscribe to orders table for this user
+        // Subscribe to all changes in orders table for this user
         const channel = supabase
-            .channel('agent_order_channel')
+            .channel(`user_orders_${user.id}`)
             .on(
                 'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'orders', filter: `user_id=eq.${user.id}` },
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'orders',
+                    filter: `user_id=eq.${user.id}`
+                },
                 (payload) => {
-                    console.log('New order created via voice:', payload.new);
-                    setCurrentOrder(payload.new as Order);
+                    console.log('Order change received:', payload.eventType, payload.new);
+                    // Check if it's an insert or update that we care about
+                    if (payload.new && (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE')) {
+                        setCurrentOrder(payload.new as Order);
+                    }
                 }
             )
-            .on(
-                'postgres_changes',
-                { event: 'UPDATE', schema: 'public', table: 'orders', filter: `id=eq.${currentOrder?.id}` },
-                (payload) => {
-                    console.log('Order updated:', payload.new);
-                    setCurrentOrder(payload.new as Order);
-                }
-            )
-            .subscribe();
+            .subscribe((status) => {
+                console.log('Subscription status:', status);
+            });
 
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [user, currentOrder?.id]);
+    }, [user]);
 
 
     const handleCallAgent = async () => {
@@ -202,9 +204,9 @@ export const Agent: React.FC = () => {
                                     <p className="text-xs text-slate-500 font-mono">ID: {currentOrder.id.slice(0, 8)}</p>
                                 </div>
                                 <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${currentOrder.status === 'completed' ? 'bg-green-500/20 text-green-500' :
-                                        currentOrder.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' :
-                                            currentOrder.status === 'received' ? 'bg-blue-500/20 text-blue-500' :
-                                                'bg-slate-500/20 text-slate-400'
+                                    currentOrder.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' :
+                                        currentOrder.status === 'received' ? 'bg-blue-500/20 text-blue-500' :
+                                            'bg-slate-500/20 text-slate-400'
                                     }`}>
                                     {currentOrder.status}
                                 </span>
