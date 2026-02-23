@@ -10,10 +10,12 @@ export const About: React.FC = () => {
                 <Link to="/" className="text-2xl font-bold tracking-tighter text-white">
                     Voice<span className="text-amber-500">Chef</span>
                 </Link>
-                <div className="space-x-8 text-sm font-medium hidden md:block">
+                <div className="space-x-4 md:space-x-8 text-sm font-medium hidden md:flex items-center">
+                    <Link to="/how-it-works" className="text-slate-300 hover:text-amber-500 transition-colors">How it Works</Link>
                     <Link to="/" className="text-slate-300 hover:text-amber-500 transition-colors">Home</Link>
-                    <Link to="/login" className="px-5 py-2.5 border border-amber-500 text-amber-500 rounded-full hover:bg-amber-500 hover:text-slate-900 transition-all font-bold">
-                        Login
+                    <Link to="/login" className="text-slate-300 hover:text-white transition-colors">Login</Link>
+                    <Link to="/signup" className="px-5 py-2.5 bg-amber-500 text-slate-900 rounded-full hover:bg-yellow-400 transition-all font-bold shadow-lg">
+                        Get Started
                     </Link>
                 </div>
             </nav>

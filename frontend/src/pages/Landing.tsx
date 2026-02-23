@@ -10,11 +10,12 @@ export const Landing: React.FC = () => {
                 <div className="text-2xl font-bold tracking-tighter text-white">
                     Voice<span className="text-amber-500">Chef</span>
                 </div>
-                <div className="space-x-8 text-sm font-medium hidden md:block">
+                <div className="space-x-4 md:space-x-8 text-sm font-medium hidden md:flex items-center">
+                    <Link to="/how-it-works" className="text-slate-300 hover:text-amber-500 transition-colors">How it Works</Link>
                     <Link to="/about" className="text-slate-300 hover:text-amber-500 transition-colors">About</Link>
                     <Link to="/login" className="text-slate-300 hover:text-amber-500 transition-colors">Login</Link>
-                    <Link to="/signup" className="px-5 py-2.5 bg-amber-500 text-slate-900 rounded-full hover:bg-yellow-400 transition-all font-bold shadow-lg hover:shadow-amber-500/20">
-                        Get Started
+                    <Link to="/signup" className="px-5 py-2.5 bg-amber-500/10 border border-amber-500/50 text-amber-500 rounded-full hover:bg-amber-500 hover:text-slate-900 transition-all font-bold">
+                        Sign Up
                     </Link>
                 </div>
             </nav>
@@ -34,19 +35,21 @@ export const Landing: React.FC = () => {
                         </span>
                     </h1>
                     <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
-                        Experience an AI-powered culinary journey. Order seamlessly with your voice and watch your meal come to life in real-time.
+
+                        AI-powered voice ordering that turns conversation into <br /> seamless automation.
                     </p>
 
-                    <Link to="/signup">
+                    <Link to="/agent">
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className="px-8 py-4 bg-amber-500 text-slate-900 text-lg font-bold rounded-full shadow-[0_0_20px_rgba(245,158,11,0.5)] hover:shadow-[0_0_30px_rgba(245,158,11,0.7)] transition-all hover:bg-amber-400"
                         >
-                            Start Your Order
+                            Get Started Free
                         </motion.button>
                     </Link>
                 </motion.div>
+
 
                 {/* Features / How it Works */}
                 <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto w-full pb-20">

@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import type { Order } from '../types';
 import { OrderCard } from './OrderCard';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const Dashboard: React.FC = () => {
     const { user, signOut } = useAuth();
@@ -79,43 +79,58 @@ export const Dashboard: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6 md:p-10">
-            <header className="mb-10 flex justify-between items-center">
+        <div className="min-h-screen bg-slate-950 p-6 md:p-10 font-sans selection:bg-amber-500 selection:text-slate-900">
+            <header className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                    <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">VoiceChef AI <span className="text-orange-500">Live</span></h1>
-                    <p className="text-gray-500 mt-2">Turning Conversations into Orders</p>
+                    <h1 className="text-3xl md:text-4xl font-bold tracking-tighter text-white">
+                        Voice<span className="text-amber-500">Chef</span> <span className="text-slate-400 font-light ml-2">Live</span>
+                    </h1>
+                    <p className="text-slate-500 mt-2 font-medium tracking-wide border-l-2 border-amber-500 pl-4 uppercase text-xs">Turning Conversations into Orders</p>
                 </div>
-                <div className="flex items-center gap-4">
-                    <span className="text-sm text-gray-600 hidden md:inline">
-                        Welcome, <span className="font-semibold text-gray-900">{user?.email}</span>
-                    </span>
+                <div className="flex flex-wrap items-center gap-4">
+                    <div className="bg-slate-900/80 px-4 py-2 rounded-xl border border-slate-800 shadow-xl flex items-center gap-3">
+                        <div className="flex flex-col">
+                            <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Active Operator</span>
+                            <span className="text-sm font-semibold text-slate-200">{user?.email}</span>
+                        </div>
+                    </div>
+
+                    <div className="bg-slate-900/80 px-4 py-2 rounded-xl border border-slate-800 shadow-xl">
+                        <span className="text-sm font-bold text-emerald-500 flex items-center gap-2">
+                            <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                            System Live
+                        </span>
+                    </div>
+
                     <button
                         onClick={() => signOut()}
-                        className="text-sm text-red-500 hover:text-red-700 font-medium px-3 py-1 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
+                        className="text-sm text-slate-400 hover:text-white font-bold px-5 py-2.5 rounded-xl border border-slate-800 hover:border-red-500/50 hover:bg-red-500/10 transition-all"
                     >
                         Sign Out
                     </button>
-                    <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
-                        <span className="text-sm font-medium text-gray-500">Status: </span>
-                        <span className="text-sm font-bold text-green-500 flex items-center gap-2 inline-flex">
-                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                            Online
-                        </span>
-                    </div>
                 </div>
             </header>
 
             {loading ? (
                 <div className="flex justify-center items-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500"></div>
                 </div>
             ) : orders.length === 0 ? (
-                <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-gray-100 opacity-80">
-                    <p className="text-2xl text-gray-400 font-medium">No active orders</p>
-                    <p className="text-gray-300 mt-2">Waiting for calls...</p>
-                </div>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-32 bg-slate-900/30 rounded-[2rem] border-2 border-dashed border-slate-800 backdrop-blur-sm"
+                >
+                    <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-600">
+                        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <p className="text-2xl text-slate-400 font-bold">No active orders</p>
+                    <p className="text-slate-600 mt-2">The kitchen is currenty clear. Waiting for customer calls...</p>
+                </motion.div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     <AnimatePresence>
                         {orders.map((order) => (
                             <OrderCard key={order.id} order={order} onComplete={handleComplete} />

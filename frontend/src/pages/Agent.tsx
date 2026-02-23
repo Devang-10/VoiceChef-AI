@@ -13,21 +13,23 @@ export const Agent: React.FC = () => {
     const [isCalling, setIsCalling] = useState(false);
     const [callStatus, setCallStatus] = useState<'idle' | 'calling' | 'active'>('idle');
     const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
+    const [guestId] = useState(() => `guest_${Math.random().toString(36).substring(2, 9)}`);
 
     // Realtime subscription for the current user's latest pending order
     useEffect(() => {
-        if (!user) return;
+        const effectiveId = user?.id || guestId;
+        if (!effectiveId) return;
 
-        // Subscribe to all changes in orders table for this user
+        // Subscribe to all changes in orders table for this user/guest
         const channel = supabase
-            .channel(`user_orders_${user.id}`)
+            .channel(`user_orders_${effectiveId}`)
             .on(
                 'postgres_changes',
                 {
                     event: '*',
                     schema: 'public',
                     table: 'orders',
-                    filter: `user_id=eq.${user.id}`
+                    filter: `user_id=eq.${effectiveId}`
                 },
                 (payload) => {
                     console.log('Order change received:', payload.eventType, payload.new);
@@ -44,11 +46,11 @@ export const Agent: React.FC = () => {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [user]);
+    }, [user, guestId]);
 
 
     const handleCallAgent = async () => {
-        if (!user) return;
+        const effectiveId = user?.id || guestId;
         setIsCalling(true);
         setCallStatus('calling');
 
@@ -60,9 +62,9 @@ export const Agent: React.FC = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    user_id: user.id,
-                    user_email: user.email,
-                    user_name: user.user_metadata?.full_name || 'Guest',
+                    user_id: effectiveId,
+                    user_email: user?.email || 'guest@example.com',
+                    user_name: user?.user_metadata?.full_name || 'Guest User',
                 }),
             });
 
@@ -118,12 +120,35 @@ export const Agent: React.FC = () => {
                     <Link to="/" className="text-xl font-bold tracking-tighter text-white">
                         Voice<span className="text-amber-500">Chef</span>
                     </Link>
-                    <button onClick={signOut} className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                        Sign Out
-                    </button>
+                    <div className="hidden md:flex items-center space-x-6 mr-6">
+                        <Link to="/how-it-works" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">How it Works</Link>
+                        <Link to="/about" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">About</Link>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                        {!user ? (
+                            <>
+                                <Link to="/login" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
+                                    Login
+                                </Link>
+                                <Link to="/signup" className="text-sm font-bold text-amber-500 border border-amber-500/30 px-4 py-1.5 rounded-full hover:bg-amber-500 hover:text-slate-900 transition-all">
+                                    Sign Up
+                                </Link>
+                            </>
+                        ) : (
+                            <button onClick={signOut} className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
+                                Sign Out
+                            </button>
+                        )}
+                    </div>
                 </nav>
 
                 <div className="flex-1 flex flex-col items-center justify-center">
+                    {!user && (
+                        <div className="mb-6 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-lg text-amber-500 text-sm flex items-center">
+                            <span className="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-pulse"></span>
+                            Demo Mode: Guest Session
+                        </div>
+                    )}
                     <div className="relative mb-12">
                         {/* Pulse Ring */}
                         {callStatus === 'active' && (
